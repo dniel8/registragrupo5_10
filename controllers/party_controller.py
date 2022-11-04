@@ -1,4 +1,5 @@
 from models.party import Party
+from repositories.party_repository import PartyRepository
 
 
 class PartyController:
@@ -9,13 +10,14 @@ class PartyController:
         :return:
         """
         print("Party controller ready...")
+        self.party_repository = PartyRepository()
 
     def get_all_parties(self) -> list:
         """
         This method get all the parties stored in the DB
         :return: list of parties
         """
-        print("Get all parties")
+        return self.party_repository.find_all()
 
     def get_party_by_id(self, id_: str) -> dict:
         """
@@ -23,7 +25,7 @@ class PartyController:
         :param id_:
         :return: party dictionary
         """
-        print("Get one party by id")
+        return self.party_repository.find_by_id(id_)
 
     def insert_party(self, party_: dict) -> dict:
         """
@@ -31,7 +33,8 @@ class PartyController:
         :param party_:
         :return: party dictionary
         """
-        print("Insert party")
+        party = Party(party_)
+        return self.party_repository.save(party)
 
 # UPDATE party
     def update_party(self, id_: str, party_: dict) -> dict:
@@ -41,7 +44,8 @@ class PartyController:
         :param party_:
         :return: party dictionary
         """
-        print("Update party")
+        party = Party(party_)
+        return self.party_repository.update(id_, party)
 
 # DELETE party
     def delete_party(self, id_: str) -> str:
@@ -51,4 +55,4 @@ class PartyController:
         :return: message: "Delete party"
         """
         print("Deleted " + id_)
-        return {"Delete count": 1}
+        return self.party_repository.delete(id_)
