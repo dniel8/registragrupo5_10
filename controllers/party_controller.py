@@ -4,13 +4,13 @@ from repositories.party_repository import PartyRepository
 
 class PartyController:
     # Constructor
-    def __int__(self):
+    def __init__(self):
         """
 
         :return:
         """
-        print("Party controller ready...")
         self.party_repository = PartyRepository()
+        print("Party controller ready...")
 
     def get_all_parties(self) -> list:
         """
@@ -33,8 +33,8 @@ class PartyController:
         :param party_:
         :return: party dictionary
         """
-        party = Party(party_)
-        return self.party_repository.save(party)
+        new_party = Party(party_)
+        return self.party_repository.save(new_party)
 
 # UPDATE party
     def update_party(self, id_: str, party_: dict) -> dict:
@@ -48,7 +48,7 @@ class PartyController:
         return self.party_repository.update(id_, party)
 
 # DELETE party
-    def delete_party(self, id_: str) -> str:
+    def delete_party(self, id_: str) -> dict:
         """
         This method deletes a party in the DB by providing its id
         :param id_:

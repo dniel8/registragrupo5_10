@@ -11,13 +11,13 @@ T = TypeVar('T')
 # TODO add data validation and error handling
 class InterfaceRepository(Generic[T]):
 
-    def __int__(self):
+    def __init__(self):
         # Database connection
         ca = certifi.where()
         data_config = self.load_config_file()
         client = pymongo.MongoClient(
             data_config.get("db-connection"),
-            tlsCAFile=ca
+            tlsCAFile=ca,
         )
         self.data_base = client[data_config.get("db-name")]
 
@@ -159,11 +159,11 @@ class InterfaceRepository(Generic[T]):
         return processed_list
 
     def transform_refs(self, item: T) -> T:
-        item_dict = item.__dict__()
+        item_dict = item.__dict__
         for key in item_dict.keys():
             if item_dict.get(key).__str__().count("object") == 1:
                 object_ = self.object_to_db_ref(getattr(item, key))
-                set(item, key, object_)
+                setattr(item, key, object_)
         return item
 
     def object_to_db_ref(self, item_ref: T) -> DBRef:
